@@ -47,7 +47,7 @@ for start in range(STARTAT+0,STARTAT+100*3,4):
 			print "Exception error in results\n\n\n\n"
 		except NameError:
 			pass
-	os.system("mv *.doc  doxc/")	
+	os.system("mv *.doc  /home/rob/Downloads/pdfgrabber/docs/")	
 #			OFILE=open(str(count)+'.pdf','wb')
 #			OFILE.write(search_results.read())
 #			OFILE.close()

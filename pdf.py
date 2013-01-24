@@ -44,8 +44,8 @@ for start in range(0,num_queries,4):
 		pass
 
 	TIMESTR=time.strftime("%H%M%m%Y")
-	os.system("mkdir -p PDFs/"+str(TIMESTR))
-	os.system("mv *.pdf PDFs/"+str(TIMESTR)+"/")	
+	os.system("mkdir -p /home/rob/Downloads/pdfgrabber/pdfs/"+str(TIMESTR))
+	os.system("mv *.pdf /home/rob/Downloads/pdfgrabber/pdfs/"+str(TIMESTR)+"/")	
 #			OFILE=open(str(count)+'.pdf','wb')
 #			OFILE.write(search_results.read())
 #			OFILE.close()
