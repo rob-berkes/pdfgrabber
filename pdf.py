@@ -25,6 +25,7 @@ STARTNUM=random.randint(1,NUMRANGE)
 #print "starting seed: "+str(STARTNUM)
 #for start in range(STARTNUM,STARTNUM+num_queries,4):
 for start in range(0,num_queries,4):
+	TIMESTR=time.strftime("%H%M%m%Y")
 	request_url='{0}&start={1}'.format(url,start)
 	print request_url
 	search_results=urllib.urlopen(request_url)
@@ -34,16 +35,19 @@ for start in range(0,num_queries,4):
 		for i in results:
 			print i
 			HASH=hashlib.sha1(i['url']).hexdigest()
-			if db.grabs.find_one({'_id':HASH}):
-				print 'Already dld!'
-			elif i['fileFormat']=="PDF/Acrobat":
-				db.grabs.insert({'_id':HASH})
-				print str(i['url'])
-                os.system("wget --no-check-certificate "+str(i['url']))
+			try:
+				if db.grabs.find_one({'_id':HASH}):
+					print 'Already dld!'
+				elif i['fileFormat']=="PDF/Acrobat":
+					db.grabs.insert({'_id':HASH})
+					print str(i['url'])
+			except KeyError:
+				print '------downloading possible non-pdf file ------'
+				TIMESTR+=str('_nonPDFpossible')
+                	os.system("wget --no-check-certificate "+str(i['url']))
 	except TypeError, KeyError:
 		pass
 
-	TIMESTR=time.strftime("%H%M%m%Y")
 	os.system("mkdir -p /home/rob/Downloads/pdfgrabber/pdfs/"+str(TIMESTR))
 	os.system("mv *.pdf /home/rob/Downloads/pdfgrabber/pdfs/"+str(TIMESTR)+"/")	
 #			OFILE=open(str(count)+'.pdf','wb')
