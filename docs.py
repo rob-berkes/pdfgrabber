@@ -21,7 +21,7 @@ url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=filetype:doc'
 
 num_queries=25*4*8 
 count=0
-STARTAT=240
+STARTAT=0
 for start in range(STARTAT+0,STARTAT+100*3,4):
 	print start
 	request_url=url+'&start='+str(start)
