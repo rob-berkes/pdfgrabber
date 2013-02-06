@@ -6,7 +6,7 @@ import hashlib
 import re
 import os
 import random
-
+DICTWORDS=479000
 conn=Connection()
 db=conn.pdfgrabber
 
@@ -18,15 +18,18 @@ def formatTitle(grabTitle):
 query=urllib.urlencode({'q':'filetype:doc'})
 #url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&%s' % (query)
 url = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=filetype:doc'
-
-num_queries=25*4*8 
+lines=[line.strip() for line in open('/usr/share/dict/words')]
+DWORD=random.randint(0,DICTWORDS)
+url += '%20'+lines[DWORD]
+print url 
+num_queries=4*1 
 count=0
 STARTAT=0
-for start in range(STARTAT+0,STARTAT+100*3,4):
-	print start
-	request_url=url+'&start='+str(start)
-	print request_url
-	search_results=urllib.urlopen(request_url)
+for start in range(STARTAT+0,STARTAT+num_queries,4):
+#	request_url=url+'&start='+str(start)
+#	print request_url
+#	search_results=urllib.urlopen(request_url)
+	search_results=urllib.urlopen(url)
 	try:
 		json=simplejson.loads(search_results.read())
 		results=json['responseData']['results']
@@ -41,7 +44,7 @@ for start in range(STARTAT+0,STARTAT+100*3,4):
 	#			elif i['fileFormat']=="Microsoft Word":
 				else:
 					db.grabs.insert({'_id':HASH})
-					print str(i['url']+"\n\n\n\n")
+#					print str(i['url']+"\n\n\n\n")
 	               			os.system("wget --no-check-certificate "+str(i['url'])+"\n\n\n\n")
 		except KeyError:
 			print "Exception error in results\n\n\n\n"
